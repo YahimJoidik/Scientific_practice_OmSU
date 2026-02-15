@@ -1,0 +1,412 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[english,russian]{babel}
+\usepackage{amssymb,amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\setbeamertemplate{caption}[numbered]
+\usepackage[format=plain,labelsep=period,justification=centerlast]{caption}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{mhchem}
+\usepackage{changepage}
+
+
+\usetheme{Copenhagen}
+\usecolortheme{default}
+
+\def\Year{\expandafter\YEAR\the\year}
+\def\YEAR#1#2#3#4{#3#4}
+
+\graphicspath{{figs/}}
+
+%\setbeamersize{text margin left=5mm, text margin right=5mm}
+
+\setbeamertemplate{frametitle}{%
+	\vspace*{-0.27cm}%
+	\nointerlineskip%
+	\begin{beamercolorbox}[sep=0.3cm,left,wd=\paperwidth]{frametitle}
+		\usebeamerfont{frametitle}\insertframetitle%
+	\end{beamercolorbox}%
+}
+
+%% Выбор шрифтов %%
+\usefonttheme[onlylarge]{structurebold}
+
+% Привычный шрифт для математических формул
+\usefonttheme[onlymath]{serif}
+
+% Более крупный шрифт для подзаголовков титульного листа
+\setbeamerfont{institute}{size=\normalsize}
+%%%%%%%%%%%%%%%%%%%
+
+% Removes navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+% Если используется последовательное появление пунктов списков на
+% слайде (не злоупотребляйте в слайдах для защиты дипломной работы),
+% чтобы еще непоявившиеся пункты были все-таки немножко видны.
+%\setbeamercovered{transparent} \setlength\abovecaptionskip{-10pt}
+%\setlength\belowcaptionskip{-10pt}
+
+
+\makeatletter
+\defbeamertemplate*{footline}{my theme}{
+	\leavevmode%
+	\hbox{%
+		\begin{beamercolorbox}[wd=.35\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+			\usebeamerfont{author and institute in head/foot}%
+			\insertshortauthor~(\insertshortinstitute)
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.40\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+			\usebeamerfont{title in head/foot}
+			\insertshorttitle
+		\end{beamercolorbox}%
+		\begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+			\insertshortdate
+			\hspace{0.5cm}
+			\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+	\end{beamercolorbox}}%
+}
+
+\definecolor{color_1}{RGB}{85, 107, 47}
+\definecolor{color_2}{RGB}{107, 142, 35}
+\definecolor{color_3}{RGB}{45,87,44}
+\setbeamercolor*{palette primary}{bg=white, fg=color_1}
+\setbeamercolor*{palette secondary}{bg=white, fg=color_2}
+\setbeamercolor*{palette tertiary}{bg=white, fg=color_3}
+\setbeamercolor*{titlelike}{bg=white, fg = color_1}
+\setbeamercolor*{title}{bg=color_1, fg = white}
+\setbeamercolor*{item}{fg=color_1}
+\setbeamercolor*{caption name}{fg=color_1}
+\setbeamercolor{author in head/foot}{bg=color_3, fg=white}
+\setbeamercolor{title in head/foot}{bg=color_1, fg=white}
+\setbeamercolor{date in head/foot}{bg=color_2, fg=white}
+\usefonttheme{professionalfonts}
+
+\addtobeamertemplate{frametitle}{}{\vspace*{-0.3cm}}
+
+
+\title[Адсорбция кислорода на графене]
+{Моделирование функционализации графена}
+
+\author[Жойдик Ефим]
+{
+	Жойдик~Ефим~Евгеньевич \\[9pt]
+	Научный руководитель: \\
+	д.ф.-м.н., профессор Прудников~П.\,В.
+}
+
+\institute[ОмГУ]{}
+%{
+%	ОмГУ им. Ф.М.~Достоевского\\[5pt]
+%	%Кафедра теоретической физики
+%}
+%
+\date[Омск -- 20\Year]
+{Омск -- 18 февраля 20\Year}
+
+%\logo{\includegraphics[width=1.3cm]{OmSU.png}}
+
+
+\begin{document}
+	
+	\frame{\titlepage}
+	
+	\begin{frame}\frametitle{Введение}
+		\begin{adjustwidth}{-7mm}{-7mm}
+			\vspace{-0.1cm}
+			Графен -- это двумерная структура, в которой атомы углерода находятся в $sp^2$ гибридизации, образуя гексагональную кристаллическую решётку (шестиугольники). Такая структура возникает вследствие особенности связей атомов углерода (рис.~\ref{fig:carbon_orbital}). Графен имеет 4 валентные орбитали: $2s$, $2p_x$, $2p_y$, $2p_z$. Первые три орбитали образуют $\sigma-$связи, лежащие в плоскости графена, образуют гексагональную решётку. Орбиталь же $2p_z$ направлена перпендикулярно графеновой плоскости и участвует в образовании $\pi-$ связей. Существуют связывающие ($\pi$-, $\sigma$-) и разрыхляющие ($\pi^{*}$-, $\sigma^{*}$-) связи. Прочные $\sigma$-связи отвечают низким значениям энергии, а $\sigma^{*}$-связи соответствуют высоким энергиям, ослабляя связь между атомами.
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.90\textwidth]{orbital.png}
+				\caption{\label{fig:carbon_orbital}				
+					Кристаллическая решётка (а), орбитали атома углерода (б) и (в) $\pi-$связи  и $\sigma-$связи в графене.
+				}
+			\end{figure}
+		\end{adjustwidth}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Введение}
+		\begin{columns}[t]
+			\begin{column}{0.57\textwidth}
+				\begin{adjustwidth}{-1mm}{-3mm}
+					\begin{figure}
+						\centering
+						\includegraphics[width=0.55\textwidth]{GrapheneE2.png}
+						\caption{\label{fig:GrapheneE2}				
+							(а) Зонная структура графена (\textcopyright Paul Wenk), (б) перекрытие соседних \\$\pi$-орбиталей.
+						}
+					\end{figure}
+				\end{adjustwidth}
+			\end{column}
+			\begin{column}{0.43\textwidth}
+				\begin{adjustwidth}{-0mm}{-10mm}
+					\vspace{-0.9cm}
+					Графен обладает особой зонной структурой. $\pi$- и $\pi^{*}$-орбитали отдельных атомов перекрываются с соседними орбиталями, образуя валентную зону ($\pi\text{-зона}$) и зону проводимости ($\pi^{*}\text{-зона}$) в форме конуса, называемого конусом Дирака. Чистый графен не имеет запрещённой зоны, а валентная зона и зона проводимости соприкасаются в $K$-точке, именуемой точкой Дирака. Вблизи этой точки энергия электронов линейно зависит от импульса, и электроны ведут себя как безмассовые релятивистские фермионы.
+				\end{adjustwidth}
+			\end{column}
+		\end{columns}	
+	\end{frame}
+	
+	\begin{frame}\frametitle{Объекты исследования}
+		\begin{adjustwidth}{-7mm}{-7mm}
+			В данном обзоре будут рассмотрены работы по моделированию оксида графена на основе нескольких функциональных групп: эпоксидные~(\ce{-O-}), гидроксильные~(\ce{-OH}), карбонильные~(\ce{=O}), карбоксильные~(\ce{-COOH}). Так же в некоторых работах исследовалось влияние дефектов на решётке графена и легирование примесными атомами.
+			\begin{figure}[h!]
+				\centering
+				\includegraphics[width=0.80\textwidth]{o_position.jpg}
+				\caption{\label{fig:o_position}				
+					Рассматриваемые функциональные O-группы на графене.
+				}
+			\end{figure}
+		\end{adjustwidth}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Искажение поверхности графена}
+		В работе\footnote{\href{https://doi.org/10.1142/S1793292013500458}{A.~Allahbakhsh, F.~Sharif, S.~Mazinani. Nano \textbf{8} 1350045 (2013).}} были изучены влияние эпоксидных~(\ce{-O-}) и гидроксильных~(\ce{-OH}) групп на поверхность оксида графена (GO). Искажение поверхности GO изучалась с помощью изображений АСМ и 3D-моделирования. Кроме того, влияние кислородсодержащих функциональных групп на поведение поверхности листов GO изучалось с использованием шарико-стержневой модели и каркасного моделирования.
+		%\addtocounter{footnote}{+1} \footnotetext{A.~Allahbakhsh, F.~Sharif, S.~Mazinani {\selectlanguage{english} The influence of oxygen-containing functional groups on the surface behavior and roughness characteristics of graphene oxide} // Nano. --- 2013. --- V.~8. --- No.~4. --- P.~1350045. \href{https://doi.org/10.1142/S1793292013500458}{[doi]}}[\thefootnote]
+	\end{frame}
+	
+	\begin{frame}\frametitle{Искажение поверхности графена}
+		На 3D-изображениях АСМ листов GO наблюдалась высокая степень флуктуации поверхности. Это поведение было связано с явной вогнутостью листов GO, которая была связана с увеличением кислородсодержащих функциональных групп на другой стороне.
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.70\textwidth]{afm_graphene_allahbakhsh.png}
+			\caption{\label{fig:afm_graphene_allahbakhsh}				
+				Трехмерные изображения листов GO, полученные с помощью каркасной модели (a), а также соответствующие трехмерные изображения GO, полученные с помощью АСМ (b)\footnote{\href{https://doi.org/10.1142/S1793292013500458}{A.~Allahbakhsh, F.~Sharif, S.~Mazinani. Nano \textbf{8} 1350045 (2013).}}.
+			}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Сравнение функционализации на краю и плоскости GO}
+		Авторы работы\footnote{J.~Feng, H.~Dong, L.~Yu, L.~Dong. J. Mater. Chem. C \textbf{5} 5984 (2017).} изучили влияние пяти функциональных групп (\ce{-COOH}, \ce{-COC-}, \ce{-OH}, \ce{-CHO}, \ce{-OCH3}) на оптические и электрические свойства графеновых квантовых точек (GQDs) листа графена C132, используя метод TD-DFT. Ширины запрещённой зоны чистого графена и графена с краями, функционализированными группами \ce{-OH}, \ce{-COOH}, \ce{-OCH3},  \ce{-CHO}, \ce{-COC-}, составляют $2.34$, $2.32$, $2.31$, $2.30$, $2.27$ и $2.15$ эВ соответственно, тогда как ширины запрещённой зоны для графена с функционализацией указанными группами поверхности, составляют $0.36$, $0.32$, $0.37$, $0.39$ и $1.86$ эВ соответственно.
+		
+		Функционализация на краю имеет меньшее влияние на оптические свойства и ширину запрещённой зоны по сравнению с поверхностной функционализацией. 
+		%~\addtocounter{footnote}{+1}\footnotetext{Jianguang~Feng, Hongzhou~Dong, Liyan~Yu, and~Lifeng Dong {\selectlanguage{english} The optical and electronic properties of graphene quantum dots with oxygen-containing groups: a density functional theory study} // J. Mater. Chem. C. --- 2017. --- V.~5. --- P.~5984. \href{https://doi.org/10.1039/C7TC00631D}{[doi]}}[\thefootnote]
+	\end{frame}
+	
+	\begin{frame}\frametitle{Сравнение функционализации на краю и плоскости GO}
+%		\begin{columns}[t]
+%			\begin{column}{0.50\textwidth}
+			\begin{adjustwidth}{-7mm}{-5mm}
+				\vspace{-0.33cm}{
+				%\hspace{1cm}
+				\begin{figure}[h!]
+					\centering
+					\includegraphics[width=0.75\textwidth]{homo_lumo_alfa.png}
+					\caption{\label{fig:homo_lumo}				
+						Изоповерхности HOMO (высшая занятая орбиталь валентной зоны) и LUMO (низшая свободная орбиталь зоны проводимости) в квантовых точках графена с различными кислородсодержащими группами в основном состоянии. Положительные и отрицательные орбитальные доли отображены красным и зеленым цветами соответственно. (a)~исходная квантовая точка графена, (b)~C132-COOH8-EF, (c)~C132-COOH2-SF, (d)~C132-COC8-EF и (e)~C132-COC2-SF~\footnote{\href{https://doi.org/10.1039/C7TC00631D}{J.~Feng, H.~Dong, L.~Yu, L.~Dong. J. Mater. Chem. C \textbf{5} 5984 (2017).}}.
+					}
+				\end{figure}
+			}
+			\end{adjustwidth}
+%			\end{column}
+%			\begin{column}{0.50\textwidth}
+%				
+%			\end{column}
+%		\end{columns}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Сравнение функционализации на краю и плоскости GO}
+	\begin{adjustwidth}{-5mm}{-0mm}
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=0.75\textwidth]{charge_density.png}
+			\caption{\label{fig:charge_density}				
+				Электронная разностная плотность между доминирующим возбужденным состоянием и основным состоянием для GQDs. Внизу показаны боковые виды. (a) исходная квантовая точка графена, (b) C132-COOH8-EF, (c) C132-COOH2-SF, (d) C132-COC8-EF и (e) C132-COC2-SF. Синяя область -- основное состояние, жёлтая -- возбуждённое\footnote{\href{https://doi.org/10.1039/C7TC00631D}{J.~Feng, H.~Dong, L.~Yu, L.~Dong. J. Mater. Chem. C \textbf{5} 5984 (2017).}}.
+			}
+		\end{figure}
+	\end{adjustwidth}
+	\end{frame}
+	
+	
+	\begin{frame}\frametitle{Свойства графена с функционализацией одновременно гидроксильными и эпоксидными группами}
+		В работе\footnote{\href{https://doi.org/10.1021/acs.jpcc.7b09513}{I.~Guilhon et al. J. Phys. Chem. C \textbf{121}, 27603 (2017).}} разработан расширенный статистический подход на основе кластерного разложения (обобщённое квазихимическое приближение, GQCA) для моделирования совместной адсорбции гидроксильных (\ce{-OH}) и эпоксидных (\ce{-O-}) групп на графене. При полном окислении и примерно равном соотношении \ce{-OH} и \ce{-O-} групп наблюдается сильное увеличение ширины запрещённой зоны~($\sim 4.4 \div 4.7$ эВ) для энергетически выгодных упорядоченных конфигураций. Предельные значения ширины запрещённой зоны: 0 эВ (чистый графен), 2.25 эВ (только -OH), 4.00 эВ (только -O-).  Совместная адсорбция двух типов групп открывает больше возможностей для регулирования ширины запрещённой зоны, чем использование только одной группы.
+	\end{frame}
+	
+	\begin{frame}\frametitle{Свойства графена, покрытого одновременно гидроксильными и эпоксидными группами}
+		\begin{columns}[t]
+			\begin{column}{0.50\textwidth}
+				\begin{figure}
+					\centering
+					\includegraphics[width=1.00\textwidth]{guilhon2017.png}
+					\caption{\label{fig:guilhon2017}				
+						Важные конфигурации кластеров, представляющие (a) чистый графен, (b) функционализация только \ce{-OH}, (c) функционализация только \ce{-O-}, (d), (e) функционализация \ce{-OH} и \ce{-O-} одновременно в разных концентрациях.
+					}
+				\end{figure}
+			\end{column}
+			\begin{column}{0.50\textwidth}
+				Обнаружено 8 стабильных выгодных состояний системы, где содержатся обе кислородные группы одновременно. Наиболее стабильные составы: (4~\ce{-OH} + 2~\ce{-O-}) на 8 атомов углерода и (2~\ce{-OH} + 3~\ce{-O-}) на 8 атомов углерода. Постоянная решётки плавно изменяется между предельными значениями и подчиняется закону Вегарда: 2.47 \AA~(графен), 2.63 \AA~(только \ce{-OH}) и 2.57 \AA~(только \ce{-O-})\footnote{\href{https://doi.org/10.1021/acs.jpcc.7b09513}{I.~Guilhon et al. J. Phys. Chem. C \textbf{121} 27603 (2017).}}.
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Влияние количества кислородных групп на свойства графена}
+		\begin{adjustwidth}{-3mm}{-0mm}
+			\begin{columns}[t]
+				\begin{column}{0.50\textwidth}
+					В работе$^{7}$ показано, что контролируя степень окисления (концентрацию кислорода) в процессе функционализации, можно целенаправленно настраивать ширину запрещенной зоны графена, превращая его из полуметалла в полупроводник, что критически важно для применения в электронике.
+					
+				\end{column}
+				\begin{column}{0.50\textwidth}
+					\begin{figure}
+						\centering
+						\includegraphics[width=0.59\textwidth]{epoxy.png}
+	%					\caption{\label{fig:epoxy}				
+	%						Результаты оптимизации структуры графена с суперъячейкой 3×3 при различной концентрации кислорода.
+	%					}
+					\end{figure}
+				\end{column}
+			\end{columns}
+			
+			\begin{figure}
+				\centering
+				\includegraphics[width=1.00\textwidth]{hanna_table_oxigen.png}
+				\caption{\label{fig:hanna_table_oxigen}				
+					Вид структуры и зависимость ширины запрещённой зоны от содержания кислорода в графене\footnote{{\href{https://doi.org/10.1088/1742-6596/1011/1/012071}{Muh.~Yusrul~Hanna et al. J. Phys.: Conf. Ser. \textbf{1011} 012071 (2018).}}}.
+				}
+			\end{figure}
+		\end{adjustwidth}
+		%\vspace{-0.1cm}\footnote*{\footnotesize{\href{https://doi.org/10.1088/1742-6596/1011/1/012071}{Muh.~Yusrul~Hanna et al. J. Phys.: Conf. Ser. \textbf{1011} 012071 (2018).}}}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Влияние количества кислородных групп на свойства графена}
+		%\setlength{\textwidth}{1.0\textwidth} % Расширить ширину текста
+		\vspace{-0.1cm}
+		{\small \textbf{\textcolor{color_1}{Таблица 1.}} Расстояния между соседними атомами C ($d_{\textrm{c-c}}$) и между атомами C и O ($d_{\textrm{c-o}}$) после релаксации, энергия адсорбции ($E_{\textrm{ads}}$) и полная энергия системы ($E_{\textrm{tot}}$).}
+		\begin{figure}
+			%\centering
+			\includegraphics[width=0.80\textwidth]{PDOS&table.png}
+			%\includegraphics[width=0.70\textwidth]{hanna_table.png}
+			\caption{\label{fig:PDOS&table}				
+				{\small Плотность состояний (PDOS) для атомов C и O при концентрации O 0\% и 50\%. Сильная гибридизация между $\textrm{O} \text{--} p_y$ и $\textrm{C} \text{--} p_z$ орбиталями ответственна за увеличение ширины запрещенной зоны}\footnote{\href{https://doi.org/10.1088/1742-6596/1011/1/012071}{Muh.~Yusrul~Hanna et al. J. Phys.: Conf. Ser. \textbf{1011} 012071 (2018).}}.
+			}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Экспериментальные исследования}
+		Эксперименты показывают, как метод синтеза влияет на свойства GO. Показано\footnote{\href{https://doi.org/10.1515/psr-2016-0106}{S.~Eigler, A.~Hirsch, Phys. Sciences Rev. \textbf{2} 20160106 (2017).}}, что важно сохранить целостность углеродной решётки при окислении и последующих реакциях. Это позволяет использовать графен в области электроники, сенсорики и катализа.
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.80\textwidth]{OxoG.png}
+			\caption{\label{fig:OxoG.png}				
+				Слева: Иллюстрация химической структуры GO со структурными дефектами в процентном масштабе. Функциональные группы в местах дефектов опущены для ясности. Справа: oxo-G1 с неповрежденным углеродным каркасом, может быть химически восстановлен до неповрежденного графена.
+			}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Экспериментальные исследования}
+		\vspace{-0.2cm}
+		\begin{adjustwidth}{-7mm}{-9mm} % Уменьшить поля слева и справа
+			{\small Функциональные группы в GO имеют противоположное влияние на разные свойства\footnote{\href{https://doi.org/10.1039/C4RA12766H}{T.~Kavinkumar, D.~Sastikumarb, S.~Manivannan. RSC Adv. \textbf{5} 10816 (2015).}}. Для электрических и диэлектрических свойств удаление функ. групп резко улучшает проводимость и диэлектрические параметры. Для газового сенсоринга при комнатной температуре их наличие обеспечивает высокую чувствительность за счет взаимодействия с молекулами газа на большей площади поверхности.}
+			%~\addtocounter{footnote}{+1}\footnotetext{\href{https://doi.org/10.1039/C4RA12766H}{T.~Kavinkumar, D.~Sastikumarb, S.~Manivannan \textbf{RSC Adv.}, 2015, \textbf{5}, 10816.}}[\thefootnote]
+			\begin{figure}
+				\centering
+				\includegraphics[width=0.70\textwidth]{kumar.png}
+				\caption{\label{fig:kumar}				
+					Схема разложения кислородсодержащих функциональных групп на GO.
+				}
+			\end{figure}
+		\end{adjustwidth}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Экспериментальные исследования}
+		В работе\footnote{\href{https://doi.org/10.1021/ie403088t}{Z.~Liu et al. Ind. Eng. Chem. Res. \textbf{53} 253 (2013).}} показано, как количество окислителя влияет на содержание различных кислородных групп в GO.
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.75\textwidth]{lui.png}
+			\caption{\label{fig:lui}				
+				Схема образования кислородсодержащих групп на GO.
+			}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Влияние кислородсодержащих функциональных групп на зонную структуру}
+		\begin{columns}[t]
+			\begin{column}{0.50\textwidth}
+				\begin{adjustwidth}{-3mm}{-0mm} % Уменьшить поля слева и справа
+					\vspace{-0.3cm}
+					\textbf{\textcolor{color_1}{Рис.~\ref{fig:roy}.}} Модель, рассчитанная зонная структура и схематическая визуализация энергетических зон вблизи K-точки для (a)~чистого графена, (b)~\ce{C=O} на плоскости графена с дефектом в виде трёх вакансий (RGO-1) и (c)~\ce{C=O} на плоскости графена с дефектом в виде трёх вакансий и адсорбированной эпоксидной группой на поверхности (RGO-2)\footnote{\href{https://doi.org/10.1016/j.cplett.2017.03.079}{R.~Roy et al. Chem. Phys. Let. \textbf{677} 80 (2017).}}.
+					
+					%\vspace{0.3cm}
+					%Эпоксидные группы наиболее пагубно влияют на электронный транспорт в графеновой решётке.
+				\end{adjustwidth}
+			\end{column}
+			\begin{column}{0.50\textwidth}
+				\vspace{-0.7cm}
+				\begin{figure}
+					\centering
+					\includegraphics[width=1.10\textwidth]{roy.png}
+					\vspace{3cm}					
+					\caption{\label{fig:roy}}
+				\end{figure}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Агрегация \ce{-O-} и \ce{-OH} групп}
+		\begin{columns}[t]
+			\begin{column}{0.50\textwidth}
+				\vspace{-0.7cm}
+				\begin{figure}
+					\centering
+					\includegraphics[width=0.70\textwidth]{yan.png}
+					%\vspace{3cm}					
+					\caption{\label{fig:yan}
+						Вид структуры с агрегацией \ce{-O-} и \ce{-OH} групп.
+					}
+				\end{figure}
+			\end{column}
+			\begin{column}{0.50\textwidth}
+				%\begin{adjustwidth}{-3mm}{-0mm} % Уменьшить поля слева и справа
+					%\vspace{-0.3cm}
+					Расчеты\footnote{\href{http://dx.doi.org/10.1103/PhysRevLett.103.086802}{J.-A.~Yan, L.~Xian, M.\,Y.~Chou. Phys. Rev. Let. \textbf{103} 086802 (2009).}}$^{,}$ \footnote{\href{http://dx.doi.org/10.1103/PhysRevB.82.125403}{J.-A.~Yan, M.\,Y.~Chou. Phys. Rev. B. \textbf{82} 125403 (2010).}} показали, что окисление графена приводит к образованию энергетически выгодной структуры полос из чистых и окисленных областей. Ширина запрещенной зоны в таком материале напрямую зависит от ширины чистых графеновых полос, что позволяет создавать и регулировать щель, изменяя степень и характер окисления.
+					
+					%\vspace{0.3cm}
+					%Эпоксидные группы наиболее пагубно влияют на электронный транспорт в графеновой решётке.
+				%\end{adjustwidth}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Влияние дефектов на распределение кислородсодержащих функциональных групп}
+		\begin{columns}[t]
+			\begin{column}{0.50\textwidth}
+				\begin{adjustwidth}{-2mm}{-9mm}
+					\vspace{-0.7cm}
+					Исследование показывает совместное влияние углеродных дефектов и кислородсодержащих функциональных групп (КФГ) в графене на его электрохимические свойства в качестве анода для натрий-ионных аккумуляторов (NIB). Было показано, что типы дефектов определяют распределение КФГ и влияют на накопительную способность по отношению к ионам натрия~($\textrm{Na}^{+}$). Введение дефектов, созданных металлическим травлением, увеличило содержание групп с двойной связью (\ce{C=O}) и уменьшило количество групп с одинарной связью (\ce{C-OH}, \ce{O-C-O}).
+				\end{adjustwidth}
+			\end{column}
+			\begin{column}{0.50\textwidth}
+				\begin{adjustwidth}{-3mm}{-0mm}
+					\vspace{-0.55cm}
+					\begin{figure}
+						\centering
+						\includegraphics[width=0.7\textwidth]{defects.png}			
+						\caption{\label{fig:defects}
+							Образование дефектов при травлении металлами (Fe,~Ni,~Co)\footnote{\href{https://doi.org/10.1039/C9CC08493B}{J.~Ye at al. Chem. Commun. \textbf{56} 1089 (2020).}}.
+						}
+					\end{figure}
+				\end{adjustwidth}
+			\end{column}
+		\end{columns}
+	\end{frame}
+	
+	\begin{frame}\frametitle{Влияние дефектов на распределение кислородсодержащих функциональных групп}
+		Таким образом, контролированное введение дефектов ведёт к росту \ce{C=O} групп, эффективных для хранения $\textrm{Na}^{+}$, улучшая ёмкость NIB и кинетику анода, сокращая путь диффузии $\textrm{Na}^{+}$.
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.85\textwidth]{NiC_groups.png}			
+			\caption{\label{fig:NiC_groups}
+				Количество кислородсодержащих функциональных групп в чистом графене и графене с введёнными дефектами\footnote{\href{https://doi.org/10.1039/C9CC08493B}{J.~Ye at al. Chem. Commun. \textbf{56} 1089 (2020).}}.
+			}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}\frametitle{\phantom{Спасибо}}
+		\centering{\bf\LARGE Спасибо за внимание!}
+	\end{frame}
+	
+\end{document}
